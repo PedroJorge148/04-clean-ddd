@@ -2,16 +2,16 @@ import { Question } from '../../enterprise/entities/question'
 import { AnswersRepository } from '../repositories/answers-repository'
 import { QuestionsRepository } from '../repositories/questions-repository'
 
-interface ChooseQuestionBestAnswerCaseRequest {
+interface ChooseQuestionBestAnswerUseCaseRequest {
   authorId: string
   answerId: string
 }
 
-interface ChooseQuestionBestAnswerCaseResponse {
+interface ChooseQuestionBestAnswerUseCaseResponse {
   question: Question
 }
 
-export class ChooseQuestionBestAnswerCase {
+export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
     private questionsRepository: QuestionsRepository,
@@ -20,7 +20,7 @@ export class ChooseQuestionBestAnswerCase {
   async execute({
     answerId,
     authorId,
-  }: ChooseQuestionBestAnswerCaseRequest): Promise<ChooseQuestionBestAnswerCaseResponse> {
+  }: ChooseQuestionBestAnswerUseCaseRequest): Promise<ChooseQuestionBestAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
     if (!answer) {

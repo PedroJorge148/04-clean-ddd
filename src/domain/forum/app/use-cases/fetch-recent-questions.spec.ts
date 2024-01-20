@@ -48,8 +48,6 @@ describe('Fetch Recent Questions', () => {
       page: 2,
     })
 
-    console.log(result.value)
-
     expect(result.value?.questions).toHaveLength(2)
   })
 })

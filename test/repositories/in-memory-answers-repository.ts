@@ -1,22 +1,27 @@
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { AnswersRepository } from '@/domain/forum/app/repositories/answers-repository'
 import { Answer } from '@/domain/forum/enterprise/entities/answer'
+import { AnswerAttachmentsRepository } from '@/domain/forum/app/repositories/answer-attachments-repository'
 
 export class InMemoryAnswersRepository implements AnswersRepository {
   public items: Answer[] = []
+
+  constructor(
+    private answerAttachmentsRepository: AnswerAttachmentsRepository,
+  ) {}
 
   async create(answer: Answer): Promise<void> {
     this.items.push(answer)
   }
 
   async findById(id: string) {
-    const question = this.items.find((item) => item.id.toString() === id)
+    const answer = this.items.find((item) => item.id.toString() === id)
 
-    if (!question) {
+    if (!answer) {
       return null
     }
 
-    return question
+    return answer
   }
 
   async findManyByQuestionId(questionId: string, { page }: PaginationParams) {
@@ -27,15 +32,17 @@ export class InMemoryAnswersRepository implements AnswersRepository {
     return answers
   }
 
-  async save(question: Answer) {
-    const itemIndex = this.items.findIndex((item) => item.id === question.id)
+  async save(answer: Answer) {
+    const itemIndex = this.items.findIndex((item) => item.id === answer.id)
 
-    this.items[itemIndex] = question
+    this.items[itemIndex] = answer
   }
 
-  async delete(question: Answer) {
-    const itemIndex = this.items.findIndex((item) => item.id === question.id)
+  async delete(answer: Answer) {
+    const itemIndex = this.items.findIndex((item) => item.id === answer.id)
 
     this.items.splice(itemIndex, 1)
+
+    this.answerAttachmentsRepository.deleteManyByAnswerId(answer.id.toString())
   }
 }

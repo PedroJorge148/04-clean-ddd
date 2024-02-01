@@ -7,7 +7,7 @@ let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let sut: AnswerQuestionUseCase
 
-describe('Create Question', () => {
+describe('Answer Question', () => {
   beforeEach(() => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
@@ -31,6 +31,7 @@ describe('Create Question', () => {
     expect(
       inMemoryAnswersRepository.items[0].attachments.currentItems,
     ).toHaveLength(2)
+
     expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
       [
         expect.objectContaining({ attachmentId: new UniqueEntityID('1') }),
